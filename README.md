@@ -1,17 +1,30 @@
 # Ma_Hoa
 Nguyễn Thị Kim Huệ-K225480106026
+
 BÀI TẬP 1: TÌM HIỂU CÁC PHƯƠNG PHÁP MÃ HOÁ CỔ ĐIỂN
+
 1.Caesar
+
 2.Affine
+
 3.Hoán vị
+
 4.Vigenère
+
 5.Playfair
+
 Với mỗi phương pháp, hãy tìm hiểu:
+
 1.Tên gọi
+
 2.Thuật toán mã hoá, thuật toán giải mã
+
 3.Không gian khóa
+
 4.Cách phá mã (mà không cần khoá)
+
 5.Cài đặt thuật toán mã hoá và giải mã bằng code C++ và bằng html+css+javascript  
+
 Bài làm :
 1. Mã hoá Caesar
 Tên gọi : Mã Caesar (Shift cipher) Thuật toán :
@@ -32,7 +45,9 @@ Cách phá mã (không cần khóa):
 Brute-force: thử 26 giá trị k (rất rẻ).
 Nếu biết ngôn ngữ: kiểm tra kết quả bằng dictionary / tần suất chữ (E, A, T …).
 Kỹ thuật tần suất: khớp tần suất ký tự trong bản mã với tần suất ngôn ngữ.
+
 Dùng HTML,CSS,JS
+
 Mã hoá
 <img width="1134" height="602" alt="Ảnh chụp màn hình 2025-09-25 154622" src="https://github.com/user-attachments/assets/2b7e4d37-e20b-41df-ac36-26be3b582f7b" />  
 Giải mã  
