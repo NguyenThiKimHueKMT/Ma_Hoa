@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mã hóa Hoán vị</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;max-width:900px;margin:2rem auto;padding:1rem}
+    label{display:block;margin-top:0.6rem}
+    textarea{width:100%;height:120px}
+    input[type=text]{width:100%}
+    button{padding:8px 12px;margin-top:8px}
+    .out{white-space:pre-wrap;background:#fafafa;padding:10px;border:1px solid #ddd;margin-top:10px}
+  </style>
+</head>
+<body>
+  <h1>Mã hóa Hoán Vị</h1>
+
+  <label>Nhập văn bản:
+    <textarea id="text"></textarea>
+  </label>
+
+  <label>Key: <code></code>
+    <input type="text" id="key" value="">
+  </label>
+
+  <div>
+    <button id="enc">Mã hóa</button>
+    <button id="dec">Giải mã</button>
+  </div>
+
+  <h3>Kết quả</h3>
+  <div id="output" class="out"></div>
+
+<script>
+function clean(s){ return s.toUpperCase().replace(/[^A-Z]/g,''); }
+
+function parse_key_order(key){
+  const k = clean(key);
+  const arr = k.split('').map((ch,i)=>({ch,i}));
+  arr.sort((a,b)=>{
+    if(a.ch < b.ch) return -1;
+    if(a.ch > b.ch) return 1;
+    return a.i - b.i;
+  });
+  const order = Array(k.length);
+  for(let i=0;i<arr.length;i++) order[arr[i].i] = i;
+  return order;
+}
+
+function columnar_encrypt(pt,key){
+  const s = clean(pt);
+  const order = parse_key_order(key);
+  const cols = order.length;
+  const rows = Math.ceil(s.length/cols);
+  let grid = Array.from({length: rows}, ()=> Array(cols).fill('X'));
+  let idx=0;
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) if(idx<s.length) grid[r][c]=s[idx++];
+  let out='';
+  for(let ord=0;ord<cols;ord++){
+    const c=order.indexOf(ord);
+    for(let r=0;r<rows;r++) out+=grid[r][c];
+  }
+  return out;
+}
+
+function columnar_decrypt(ct,key){
+  const s = clean(ct);
+  const order = parse_key_order(key);
+  const cols = order.length;
+  const rows = Math.ceil(s.length/cols);
+  let grid = Array.from({length: rows}, ()=> Array(cols).fill('X'));
+  let idx=0;
+  for(let ord=0;ord<cols;ord++){
+    const c=order.indexOf(ord);
+    for(let r=0;r<rows;r++) if(idx<s.length) grid[r][c]=s[idx++];
+  }
+  let out='';
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) out+=grid[r][c];
+  // 🔥 loại bỏ X padding cuối
+  return out.replace(/X+$/,'');
+}
+
+document.getElementById('enc').onclick=()=>{
+  document.getElementById('output').textContent=columnar_encrypt(
+    document.getElementById('text').value,
+    document.getElementById('key').value
+  );
+};
+document.getElementById('dec').onclick=()=>{
+  document.getElementById('output').textContent=columnar_decrypt(
+    document.getElementById('text').value,
+    document.getElementById('key').value
+  );
+};
+</script>
+</body>
+</html>
